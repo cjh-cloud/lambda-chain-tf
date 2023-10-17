@@ -1,0 +1,9 @@
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+.terraform/
+
+python/
+*.zip
+.vscode/
+.DS_Store

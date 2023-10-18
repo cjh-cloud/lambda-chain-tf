@@ -1,0 +1,75 @@
+---
+branches:
+  - prod
+defaultBranch: "prod"
+preset: "angular"
+tagFormat: "${version}"
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - "@semantic-release/changelog"
+  - "@semantic-release/github"
+  - "@semantic-release/exec"
+
+verifyConditions:
+  - "@semantic-release/github"
+
+analyzeCommits:
+  - path: "@semantic-release/commit-analyzer"
+    releaseRules:
+    - type: "feat"
+      release: "minor"
+    - type: "fix"
+      release: "patch"
+    - type: "breaking"
+      release: "major"
+    - type: "refactor"
+      release: "patch"
+    - type: "chore"
+      release: "patch"
+
+generateNotes:
+  - path: "@semantic-release/release-notes-generator"
+    writerOpts:
+      groupBy: "type"
+      commitGroupsSort:
+        - "breaking"
+        - "feat"
+        - "fix"
+        - "chore"
+      commitsSort: "header"
+    types:
+    - type: "feat"
+    - section: "Features"
+    - type: "fix"
+    - section: "Bug Fixes"
+    - type: "breaking"
+    - section: "Breaking Changes"
+    - type: "refactor"
+    - hidden: true
+    - type: "chore"
+    - section: "Chore"
+    - type: "docs"
+    - hidden: true
+    - type: "doc"
+    - hidden: true
+    - type: "style"
+    - hidden: true
+    - type: "perf"
+    - hidden: true
+    - type: "test"
+    - hidden: true
+    presetConfig: true
+  - path: "@semantic-release/exec"
+    cmd: "echo ${nextRelease.version} > nextRelease"
+prepare:
+  - path: "@semantic-release/changelog"
+    changelogFile: "docs/CHANGELOG.md"
+publish:
+  - path: "@semantic-release/github"
+
+success:
+  - "@semantic-release/github"
+
+fail:
+  - "@semantic-release/github"
